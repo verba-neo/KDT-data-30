@@ -1,24 +1,37 @@
 # board/views.py
+from django.shortcuts import render, redirect
 
-from django.shortcuts import render
+from .models import Article
 
-
+# Create
 def new(request):
     return render(request, 'board/new.html')
 
 
 def create(request):
-    pass
+    article = Article()
+    article.title = request.GET['title']
+    article.content = request.GET['content']
+    article.save()
 
+    return redirect(f'/board/{article.pk}/')
 
+# Read
 def index(request):
-    return render(request, 'board/index.html')
+    # 모든 게시글 조회
+    articles = Article.objects.all()
+    return render(request, 'board/index.html', {
+        'articles': articles,
+    })
 
 
 def detail(request, pk):
-    return render(request, 'board/detail.html')
+    article = Article.objects.get(pk=pk)
+    return render(request, 'board/detail.html', {
+        'article': article,
+    })
 
-
+# Update
 def edit(request):
     return render(request, 'board/edit.html')
 
@@ -26,6 +39,6 @@ def edit(request):
 def update(request):
     pass
 
-
+# Delete
 def delete(request):
     pass

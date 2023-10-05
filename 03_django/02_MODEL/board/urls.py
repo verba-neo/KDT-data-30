@@ -1,5 +1,4 @@
 # board/urls.py
-
 from django.urls import path
 from . import views
 
@@ -13,10 +12,10 @@ urlpatterns = [
     path('', views.index),
     # board/1/
     path('<int:pk>/', views.detail),
-    # board/edit/
-    path('edit/', views.edit),
-    # board/update/
-    path('update/', views.update),
-    # board/delete/
-    path('delete/', views.delete),
+    # board/1/edit/
+    path('<int:pk>/edit/', views.edit),
+    # board/1/update/
+    path('<int:pk>/update/', views.update),
+    # board/1/delete/
+    path('<int:pk>/delete/', views.delete),
 ]

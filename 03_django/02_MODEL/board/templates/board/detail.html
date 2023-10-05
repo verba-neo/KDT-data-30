@@ -7,4 +7,17 @@
   {{ article.content }}
 </p>
 
+<div>
+  <a href="/board/{{ article.pk }}/edit/">
+    <button>수정</button>
+  </a>
+</div>
+<div>
+  <a href="/board/{{ article.pk }}/delete/">
+    <button onclick="return confirm('진짜 삭제?')">
+      삭제
+    </button>
+  </a>
+</div>
+
 {% endblock content %}

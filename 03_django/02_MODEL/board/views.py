@@ -29,16 +29,27 @@ def detail(request, pk):
     article = Article.objects.get(pk=pk)
     return render(request, 'board/detail.html', {
         'article': article,
-    })
+    })  
 
 # Update
-def edit(request):
-    return render(request, 'board/edit.html')
+def edit(request, pk):
+    article = Article.objects.get(pk=pk)
+    return render(request, 'board/edit.html', {
+        'article': article,
+    })
 
 
-def update(request):
-    pass
+def update(request, pk):
+    article = Article.objects.get(pk=pk)
+    article.title = request.GET['title']
+    article.content = request.GET['content']
+    article.save()
+
+    return redirect(f'/board/{article.pk}/')
+
 
 # Delete
-def delete(request):
-    pass
+def delete(request, pk):
+    article = Article.objects.get(pk=pk)
+    article.delete()
+    return redirect('/board/')

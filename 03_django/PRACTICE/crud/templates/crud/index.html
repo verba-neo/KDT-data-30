@@ -7,7 +7,7 @@
   {% for s in students %}
   <li>
     <!-- <a href="/school/{{ s.pk }}/"> -->
-    <a href="{% url "crud:detail" s.pk %}"></a>
+    <a href="{% url "crud:detail" s.pk %}">
       {{ s.name }} ({{ s.major }})
     </a>
   </li>

@@ -3,29 +3,12 @@
 {% block content %}
 <h1>New Student</h1>
 
-<form action="{% url "crud:create" %}">
-
+<form action="{% url "crud:create" %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
   <div>
-    <label for="student_name">이름: </label>
-    <input type="text" id="student_name" name="student_name">
+    <button>제출</button>
   </div>
-  <div>
-    <label for="student_major">전공: </label>
-    <input type="text" id="student_major" name="student_major">
-  </div>
-  <div>
-    <label for="student_age">나이: </label>
-    <input type="numbers" id="student_age" name="student_age">
-  </div>
-  <div>
-    <label for="student_description">설명: </label>
-    <textarea name="student_description" id="student_description" cols="30" rows="10"></textarea>
-  </div>
-  <div>
-    <button>학생 등록</button>
-  </div>
-
-
 </form>
 
 {% endblock content %}

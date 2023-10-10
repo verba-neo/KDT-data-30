@@ -4,20 +4,21 @@ from django.shortcuts import render, redirect
 from .models import Article
 from .forms import ArticleForm
 
-# Create
-def new(request):
-    form = ArticleForm()  # input tag 대신 생성
-    return render(request, 'board/new.html', {
+
+def create(request):
+    if request.method == 'GET':
+        form = ArticleForm()  # input tag 대신 생성
+
+    elif request.method == 'POST':
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            article = form.save()
+            return redirect('board:detail', article.pk)
+        
+    return render(request, 'board/form.html', {
         'form': form,
     })
 
-
-def create(request):
-    article = Article()
-    article.title = request.POST['title']
-    article.content = request.POST['content']
-    article.save()
-    return redirect('board:detail', article.pk)
 
 # Read
 def index(request):
@@ -34,24 +35,22 @@ def detail(request, pk):
         'article': article,
     })  
 
-# Update
-def edit(request, pk):
-    article = Article.objects.get(pk=pk)
-    form = ArticleForm(instance=article)
-    
-    return render(request, 'board/edit.html', {
-        'article': article,
-        'form': form,
-    })
-
 
 def update(request, pk):
     article = Article.objects.get(pk=pk)
-    article.title = request.POST['title']
-    article.content = request.POST['content']
-    article.save()
-    return redirect('board:detail', article.pk)
 
+    if request.method == 'GET':
+        form = ArticleForm(instance=article)
+
+    elif request.method == 'POST':
+        form = ArticleForm(data=request.POST, instance=article)
+        if form.is_valid():
+            article = form.save()
+            return redirect('board:detail', article.pk)
+
+    return render(request, 'board/form.html', {
+        'form': form,
+    })
 
 
 # Delete

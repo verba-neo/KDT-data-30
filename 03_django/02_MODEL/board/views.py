@@ -2,19 +2,22 @@
 from django.shortcuts import render, redirect
 
 from .models import Article
+from .forms import ArticleForm
 
 # Create
 def new(request):
-    return render(request, 'board/new.html')
+    form = ArticleForm()  # input tag 대신 생성
+    return render(request, 'board/new.html', {
+        'form': form,
+    })
 
 
 def create(request):
     article = Article()
-    article.title = request.GET['title']
-    article.content = request.GET['content']
+    article.title = request.POST['title']
+    article.content = request.POST['content']
     article.save()
-
-    return redirect(f'/board/{article.pk}/')
+    return redirect('board:detail', article.pk)
 
 # Read
 def index(request):
@@ -34,22 +37,25 @@ def detail(request, pk):
 # Update
 def edit(request, pk):
     article = Article.objects.get(pk=pk)
+    form = ArticleForm(instance=article)
+    
     return render(request, 'board/edit.html', {
         'article': article,
+        'form': form,
     })
 
 
 def update(request, pk):
     article = Article.objects.get(pk=pk)
-    article.title = request.GET['title']
-    article.content = request.GET['content']
+    article.title = request.POST['title']
+    article.content = request.POST['content']
     article.save()
+    return redirect('board:detail', article.pk)
 
-    return redirect(f'/board/{article.pk}/')
 
 
 # Delete
 def delete(request, pk):
     article = Article.objects.get(pk=pk)
     article.delete()
-    return redirect('/board/')
+    return redirect('board:index')

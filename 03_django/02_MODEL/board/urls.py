@@ -2,20 +2,22 @@
 from django.urls import path
 from . import views
 
+# <app_name>:<pattern_name>
+app_name = 'board'
 
 urlpatterns = [
-    # board/new/
-    path('new/', views.new),
-    # board/create/
-    path('create/', views.create),
-    # board/
-    path('', views.index),
-    # board/1/
-    path('<int:pk>/', views.detail),
-    # board/1/edit/
-    path('<int:pk>/edit/', views.edit),
-    # board/1/update/
-    path('<int:pk>/update/', views.update),
-    # board/1/delete/
-    path('<int:pk>/delete/', views.delete),
+    # board/new/ => board:new
+    path('new/', views.new, name='new'),
+    # board/create/ => board:create
+    path('create/', views.create, name='create'),
+    # board/  => board:index
+    path('', views.index, name='index'),
+    # board/1/ => board:deatil, pk
+    path('<int:pk>/', views.detail, name='detail'),
+    # board/1/edit/  => board:edit, pk
+    path('<int:pk>/edit/', views.edit, name='edit'),
+    # board/1/update/ => board:update, pk
+    path('<int:pk>/update/', views.update, name='update'),
+    # board/1/delete/ => board:delete, pk
+    path('<int:pk>/delete/', views.delete, name='delete'),
 ]

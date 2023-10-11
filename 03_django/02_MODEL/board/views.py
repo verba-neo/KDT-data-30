@@ -1,10 +1,12 @@
 # board/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_safe, require_POST, require_http_methods
 
 from .models import Article
 from .forms import ArticleForm
 
 
+@require_http_methods(['GET', 'POST'])
 def create(request):
     if request.method == 'GET':
         form = ArticleForm()  # input tag 대신 생성
@@ -21,6 +23,7 @@ def create(request):
 
 
 # Read
+@require_safe
 def index(request):
     # 모든 게시글 조회
     articles = Article.objects.all()
@@ -29,16 +32,20 @@ def index(request):
     })
 
 
+@require_safe
 def detail(request, pk):
-    article = Article.objects.get(pk=pk)
+    # article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article, pk=pk)
+    
     return render(request, 'board/detail.html', {
         'article': article,
     })  
 
 
+@require_http_methods(['GET', 'POST'])
 def update(request, pk):
-    article = Article.objects.get(pk=pk)
-
+    article = get_object_or_404(Article, pk=pk)
+    
     if request.method == 'GET':
         form = ArticleForm(instance=article)
 
@@ -54,7 +61,9 @@ def update(request, pk):
 
 
 # Delete
+@require_POST
 def delete(request, pk):
-    article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article, pk=pk)
     article.delete()
     return redirect('board:index')
+    

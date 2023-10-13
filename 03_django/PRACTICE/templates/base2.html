@@ -12,9 +12,21 @@
       <li>
         <a href="{% url "crud:index" %}">Index</a>
       </li>
+      {% if request.user.is_authenticated %}
       <li>
         <a href="{% url "crud:create" %}">New</a>
       </li>
+      <li>
+        <a href="{% url "accounts:logout" %}">Logout</a>
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url "accounts:signup" %}">Signup</a>
+      </li>
+      <li>
+        <a href="{% url "accounts:login" %}">Login</a>
+      </li>
+      {% endif %}
     </ul>
   </nav>
 

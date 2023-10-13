@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student
+from .models import Student, Reply
 
 
 class StudentForm(forms.ModelForm):
@@ -26,4 +26,23 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = '__all__'
+        exclude = ('user', )
+
+
+class ReplyForm(forms.ModelForm):
+    CHOICES = [
+        (1, '★'),
+        (2, '★★'),
+        (3, '★★★'),
+        (4, '★★★★'),
+        (5, '★★★★★'),
+    ]
+
+    rank = forms.ChoiceField(
+        widget=forms.Select(),
+        choices=CHOICES
+    )
+
+    class Meta:
+        model = Reply
+        exclude = ('user', 'student',)

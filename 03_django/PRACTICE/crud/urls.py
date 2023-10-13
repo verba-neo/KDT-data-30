@@ -15,5 +15,8 @@ urlpatterns = [
     path('<int:pk>/update/', views.update, name='update'),  # crud:update
     # /univ/1/delete/
     path('<int:pk>/delete/', views.delete, name='delete'),  # crud:delete
+
+    path('<int:pk>/reply/create/', views.create_reply, name='create_reply'),
+    path('<int:pk>/reply/<int:reply_pk>/delete/', views.delete_reply, name='delete_reply'),
 ]
     

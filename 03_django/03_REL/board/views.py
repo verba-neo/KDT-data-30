@@ -1,11 +1,13 @@
 # board/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_safe, require_POST, require_http_methods
+from django.contrib.auth.decorators import login_required
 
 from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
 
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def create(request):
     if request.method == 'GET':
@@ -24,7 +26,6 @@ def create(request):
     })
 
 
-# Read
 @require_safe
 def index(request):
     # 모든 게시글 조회
@@ -48,9 +49,14 @@ def detail(request, pk):
     })  
 
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def update(request, pk):
     article = get_object_or_404(Article, pk=pk)
+    
+    if request.user != article.user:
+        return redirect('board:detail', article.pk)
+
     
     if request.method == 'GET':
         form = ArticleForm(instance=article)
@@ -66,14 +72,20 @@ def update(request, pk):
     })
 
 
-# Delete
+@login_required
 @require_POST
-def delete(request, pk):
+def delete(request, pk):        
     article = get_object_or_404(Article, pk=pk)
+    
+    if request.user != article.user:
+        return redirect('board:detail', article.pk)
+
     article.delete()
     return redirect('board:index')
     
 
+# 로그인 안하고 get 요청 보냄
+@login_required
 @require_POST
 def create_comment(request, pk):
     article = get_object_or_404(Article, pk=pk)
@@ -86,9 +98,14 @@ def create_comment(request, pk):
     return redirect('board:detail', article.pk)
 
 
+@login_required
 @require_POST
 def delete_comment(request, pk, comment_pk):
     article = get_object_or_404(Article, pk=pk)
     comment = get_object_or_404(Comment, pk=comment_pk)
+    
+    if request.user != comment.user:
+        return redirect('board:detail', article.pk)
+    
     comment.delete()
     return redirect('board:detail', article.pk)

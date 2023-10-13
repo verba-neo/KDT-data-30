@@ -16,4 +16,9 @@ urlpatterns = [
     path('<int:pk>/update/', views.update, name='update'),
     # board/1/delete/ => board:delete, pk
     path('<int:pk>/delete/', views.delete, name='delete'),
-]
+
+    # board/1/comments/create
+    path('<int:pk>/comments/create/', views.create_comment, name='create_comment'),
+    # board/1/comments/1/delete/
+    path('<int:pk>/comments/<int:comment_pk>/delete/', views.delete_comment, name='delete_comment'),
+]   

@@ -109,3 +109,19 @@ def delete_comment(request, pk, comment_pk):
     
     comment.delete()
     return redirect('board:detail', article.pk)
+
+@login_required
+@require_POST
+def like(request, pk):
+    # 모델링 => 뷰함수 => UI / 시나리오
+    # detail.html 에 버튼을 만든다 => 여기 함수에 진입한다. => 다시 detail로 리다이렉트
+
+    article = get_object_or_404(Article, pk=pk)
+    user =  request.user
+    article.like_users.add(user)
+    return redirect('board:detail', article.pk)
+
+
+    
+    
+

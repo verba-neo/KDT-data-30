@@ -8,6 +8,16 @@
   {{ article.content }}
 </p>
 
+<div>
+  {% if request.user.is_authenticated %}
+  <form action="{% url "board:like" article.pk %}" method="POST">
+    {% csrf_token %}
+    <button>좋아요</button>
+  </form>
+  {% endif %}
+</div>
+
+
 {% if article.user == request.user %}
 <div>
   <a href="{% url "board:update" article.pk %}">

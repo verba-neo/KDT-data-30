@@ -7,12 +7,12 @@ User = get_user_model()
 
 
 class Article(models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    like_users = models.ManyToManyField(User, related_name='like_articles')
 
 
 class Comment(models.Model):
@@ -21,4 +21,3 @@ class Comment(models.Model):
     content = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-

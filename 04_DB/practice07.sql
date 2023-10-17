@@ -23,8 +23,8 @@ SELECT title, CHAR_LENGTH(title) AS 'character count'
 FROM books;
 
 -- 6
-SELECT
-	CONCAT() AS 'short title',
-    CONCAT() AS 'author',
-    CONCAT() AS 'quantity'
+SELECT 
+	CONCAT(SUBSTR(title, 1, 10), '...') AS 'short title', 
+    CONCAT(author_lname, ',', author_fname) AS 'author', 
+    CONCAT(stock_quantity, ' in stock') AS 'quantity' 
 FROM books;

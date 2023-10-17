@@ -38,14 +38,14 @@ def index(request):
 @require_safe
 def detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    # 댓글 작성용 HTML
     form = CommentForm()
-    # 댓글 조회용
-    # comments = article.comment_set.all()
+    # article에 request.user 가 좋아요를 눌렀는가?
+    is_like = article.like_users.filter(pk=request.user.pk).exists()
 
     return render(request, 'board/detail.html', {
         'article': article,
         'form': form,
+        'is_like': is_like,
     })  
 
 
@@ -118,10 +118,14 @@ def like(request, pk):
 
     article = get_object_or_404(Article, pk=pk)
     user =  request.user
-    article.like_users.add(user)
+
+    
+    # if user in article.like_users.all():  # Python
+    
+    if article.like_users.filter(pk=user.pk).exists():
+        article.like_users.remove(user)  # 좋아요 취소
+    else:
+        article.like_users.add(user)  # 좋아요 추가
+
+
     return redirect('board:detail', article.pk)
-
-
-    
-    
-

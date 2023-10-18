@@ -30,10 +30,3 @@ SELECT title, stock_quantity,
 		ELSE '*****'
     END AS stars
 FROM books;
-
-
-
-
-
-
-
